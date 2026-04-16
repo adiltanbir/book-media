@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Media — Companion Content</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f5f0e8;
+      --paper: #faf7f2;
+      --ink: #1a1714;
+      --ink-light: #5a5350;
+      --gold: #b8913a;
+      --gold-light: #d4a84b;
+      --rule: #ddd5c5;
+      --accent: #2c4a3e;
+      --accent-light: #eef2f0;
+      --audio-bg: #f7f2ea;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--ink);
+      color: var(--cream);
+      text-align: center;
+      padding: 3rem 1.5rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 28px,
+        rgba(255,255,255,0.025) 28px, rgba(255,255,255,0.025) 29px
+      );
+      pointer-events: none;
+    }
+    .header-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.1s forwards;
+    }
+    header h1 {
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.25s forwards;
+    }
+    header h1 em { font-style: italic; color: var(--gold-light); }
+    .header-sub {
+      margin-top: 0.9rem;
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(245,240,232,0.6);
+      max-width: 420px;
+      margin-inline: auto;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.4s forwards;
+    }
+    .header-rule {
+      width: 48px; height: 1px;
+      background: var(--gold);
+      margin: 1.5rem auto 0;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.55s forwards;
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 5rem;
+    }
+
+    /* ── Section Labels ── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      margin-top: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+    main > .section-label:first-child { margin-top: 0; }
+    .label-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+    }
+    .label-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      white-space: nowrap;
+    }
+    .label-line { flex: 1; height: 1px; background: var(--rule); }
+
+    /* ── YouTube ── */
+    .youtube-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 6px;
+      box-shadow: 0 2px 24px rgba(26,23,20,0.13);
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.1s forwards;
+    }
+    .youtube-wrap iframe {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* ── Media Block ── */
+    .media-block {
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+      box-shadow: 0 1px 8px rgba(26,23,20,0.06);
+    }
+    .media-block:last-child { margin-bottom: 0; }
+
+    .block-header {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.85rem 1.1rem;
+      border-bottom: 1px solid var(--rule);
+      background: var(--paper);
+    }
+    .block-icon {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .block-icon.video { background: var(--accent-light); }
+    .block-icon.audio { background: var(--audio-bg); }
+    .block-icon svg { width: 16px; height: 16px; }
+
+    .block-meta { flex: 1; min-width: 0; }
+    .block-title {
+      font-size: 1rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .block-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--ink-light);
+      margin-top: 0.15rem;
+      letter-spacing: 0.06em;
+    }
+
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 3px;
+      padding: 0.35rem 0.65rem;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.18s, color 0.18s;
+    }
+    .dl-btn:hover { background: var(--accent); color: #fff; }
+    .dl-btn svg { width: 11px; height: 11px; }
+
+    /* Native video */
+    .native-video {
+      display: block;
+      width: 100%;
+      background: #000;
+      max-height: 320px;
+    }
+
+    /* Audio wrapper */
+    .audio-player-wrap {
+      padding: 1rem 1.1rem;
+    }
+    audio.styled-audio {
+      display: block;
+      width: 100%;
+      height: 40px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem 3rem;
+      border-top: 1px solid var(--rule);
+      color: var(--ink-light);
+      font-size: 0.9rem;
+      font-weight: 300;
+    }
+    footer span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      display: block;
+      margin-top: 0.4rem;
+      letter-spacing: 0.1em;
+      opacity: 0.45;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; }
+    .d4 { animation-delay: 0.24s; }
+    .d5 { animation-delay: 0.30s; }
+    .d6 { animation-delay: 0.36s; }
+    .d7 { animation-delay: 0.42s; }
+    .d8 { animation-delay: 0.48s; }
+
+    @media (max-width: 480px) {
+      .dl-btn span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <p class="header-eyebrow">Digital Companion</p>
+  <h1>Your Book Title<br /><em>Media Archive</em></h1>
+  <p class="header-sub">Supplementary audio &amp; video content for readers of the printed edition.</p>
+  <div class="header-rule"></div>
+</header>
+
+<main>
+
+  <!-- ════════════════════════════════
+    01 · YOUTUBE VIDEO
+    Replace YOUR_YOUTUBE_VIDEO_ID with
+    the ID from your YouTube link.
+    e.g. youtube.com/watch?v=dQw4w9WgXcQ
+    → ID is dQw4w9WgXcQ
+  ════════════════════════════════ -->
+  <div class="section-label d1">
+    <div class="label-num">01</div>
+    <span class="label-text">Featured Video</span>
+    <div class="label-line"></div>
+  </div>
+
+  <div class="youtube-wrap d2">
+    <iframe
+      src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID"
+      title="Featured Video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+
+  <!-- ════════════════════════════════
+    02 · VIDEO FILES
+    Upload each video to archive.org.
+    After upload, open the item page,
+    click the filename, copy the URL.
+    Format: https://archive.org/download/ITEM-ID/filename.mp4
+    Paste that URL into both the
+    <source src="..."> and the dl-btn href.
+  ════════════════════════════════ -->
+  <div class="section-label d3">
+    <div class="label-num">02</div>
+    <span class="label-text">Video Files</span>
+    <div class="label-line"></div>
+  </div>
+
+  <!-- Video 1 -->
+  <div class="media-block d4">
+    <div class="block-header">
+      <div class="block-icon video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2c4a3e" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <polygon points="10,9 16,12 10,15" fill="#2c4a3e" stroke="none"/>
+        </svg>
+      </div>
+      <div class="block-meta">
+        <div class="block-title">Video 1 — Your Title Here</div>
+        <div class="block-sub">Chapter X · MP4</div>
+      </div>
+      <a class="dl-btn"
+         href="https://archive.org/download/YOUR-ITEM-ID/video1.mp4"
+         target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12 3v13M7 12l5 5 5-5"/><path d="M5 20h14"/>
+        </svg>
+        <span>Download</span>
+      </a>
+    </div>
+    <video class="native-video" controls preload="none">
+      <source src="https://archive.org/download/YOUR-ITEM-ID/video1.mp4" type="video/mp4" />
+      Your browser does not support video.
+      <a href="https://archive.org/download/YOUR-ITEM-ID/video1.mp4">Download instead.</a>
+    </video>
+  </div>
+
+  <!-- Video 2 -->
+  <div class="media-block d5">
+    <div class="block-header">
+      <div class="block-icon video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2c4a3e" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <polygon points="10,9 16,12 10,15" fill="#2c4a3e" stroke="none"/>
+        </svg>
+      </div>
+      <div class="block-meta">
+        <div class="block-title">Video 2 — Your Title Here</div>
+        <div class="block-sub">Chapter X · MP4</div>
+      </div>
+      <a class="dl-btn"
+         href="https://archive.org/download/YOUR-ITEM-ID/video2.mp4"
+         target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12 3v13M7 12l5 5 5-5"/><path d="M5 20h14"/>
+        </svg>
+        <span>Download</span>
+      </a>
+    </div>
+    <video class="native-video" controls preload="none">
+      <source src="https://archive.org/download/YOUR-ITEM-ID/video2.mp4" type="video/mp4" />
+      Your browser does not support video.
+      <a href="https://archive.org/download/YOUR-ITEM-ID/video2.mp4">Download instead.</a>
+    </video>
+  </div>
+
+
+  <!-- ════════════════════════════════
+    03 · AUDIO FILES
+    Same process as videos — upload to
+    archive.org, copy direct URL, paste
+    into <source src="..."> and dl-btn href.
+  ════════════════════════════════ -->
+  <div class="section-label d6">
+    <div class="label-num">03</div>
+    <span class="label-text">Audio Files</span>
+    <div class="label-line"></div>
+  </div>
+
+  <!-- Audio 1 -->
+  <div class="media-block d7">
+    <div class="block-header">
+      <div class="block-icon audio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#b8913a" stroke-width="2">
+          <path d="M9 18V5l12-2v13"/>
+          <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+        </svg>
+      </div>
+      <div class="block-meta">
+        <div class="block-title">Audio 1 — Your Title Here</div>
+        <div class="block-sub">Chapter X · MP3</div>
+      </div>
+      <a class="dl-btn"
+         href="https://archive.org/download/YOUR-ITEM-ID/audio1.mp3"
+         target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12 3v13M7 12l5 5 5-5"/><path d="M5 20h14"/>
+        </svg>
+        <span>Download</span>
+      </a>
+    </div>
+    <div class="audio-player-wrap">
+      <audio class="styled-audio" controls preload="none">
+        <source src="https://archive.org/download/YOUR-ITEM-ID/audio1.mp3" type="audio/mpeg" />
+        Your browser does not support audio.
+      </audio>
+    </div>
+  </div>
+
+  <!-- Audio 2 -->
+  <div class="media-block d8">
+    <div class="block-header">
+      <div class="block-icon audio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#b8913a" stroke-width="2">
+          <path d="M9 18V5l12-2v13"/>
+          <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+        </svg>
+      </div>
+      <div class="block-meta">
+        <div class="block-title">Audio 2 — Your Title Here</div>
+        <div class="block-sub">Chapter X · MP3</div>
+      </div>
+      <a class="dl-btn"
+         href="https://archive.org/download/YOUR-ITEM-ID/audio2.mp3"
+         target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12 3v13M7 12l5 5 5-5"/><path d="M5 20h14"/>
+        </svg>
+        <span>Download</span>
+      </a>
+    </div>
+    <div class="audio-player-wrap">
+      <audio class="styled-audio" controls preload="none">
+        <source src="https://archive.org/download/YOUR-ITEM-ID/audio2.mp3" type="audio/mpeg" />
+        Your browser does not support audio.
+      </audio>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Companion content for <em>Your Book Title</em>
+  <span>© 2025 Author Name · All rights reserved</span>
+</footer>
+
+</body>
+</html>
